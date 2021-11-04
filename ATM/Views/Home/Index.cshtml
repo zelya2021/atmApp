@@ -1,0 +1,158 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+        font-family: Gotham Rounded, sans-serif;
+        font-weight: normal;
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+        background: linear-gradient(to right, #00AAFF, #00FF6C);
+    }
+
+    .atm-grid {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        min-height: 100vh;
+        grid-template-columns: repeat(5, 100px);
+        grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+    }
+
+        .atm-grid > button {
+            cursor: pointer;
+            font-size: 2rem;
+            border: 1px solid white;
+            outline: none;
+            background-color: rgba(255, 255, 255, .75);
+        }
+
+            .atm-grid > button:hover {
+                background-color: rgba(255, 255, 255, .9);
+            }
+
+    .span-two {
+        grid-column: span 2;
+    }
+    .span-three {
+        grid-column: span 3;
+    }
+
+    .output {
+        grid-column: 1 / -1;
+        background-color: rgba(0, 0, 0, .75);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+        flex-direction: column;
+        padding: 10px;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .output .current-operand {
+            color: white;
+            font-size: 2.5rem;
+        }
+</style>
+
+<div class="atm-grid">
+    <div class="output">
+        <div data-previous-operand class="previous-operand"></div>
+        <div data-current-operand class="current-operand"></div>
+    </div>
+
+    @*<button data-delete class="span-two">DEL</button>*@
+    @*<button data-operation>÷</button>*@
+    <button data-number>0</button>
+    <button data-number>1</button>
+    <button data-number>2</button>
+    <button data-number>3</button>
+    @*<button data-operation>*</button>*@
+
+    <button data-number>4</button>
+    <button data-number>5</button>
+    <button data-number>6</button>
+    @*<button data-operation>+</button>*@
+    <button data-number>7</button>
+    <button data-number>8</button>
+    <button data-number>9</button>
+    @*<button data-operation>-</button>*@
+    @*<button data-number>.</button>*@
+    <button data-all-clear class="span-two">AC</button>
+    <button data-equals class="span-three">OK</button>
+</div>
+
+<script>
+    class Calculator {
+        constructor(currentOperandTextElement) {
+            this.currentOperandTextElement = currentOperandTextElement
+            this.clear()
+        }
+
+        clear() {
+            this.currentOperand = ''
+            this.currentOperandTextElement.innerText = ''
+        }
+
+        delete() {
+            this.currentOperand = this.currentOperand.toString().slice(0, -1)
+        }
+
+        appendNumber(number) {
+            this.currentOperand = this.currentOperand.toString() + number.toString()
+        }
+        updateDisplay() {
+            if (this.currentOperandTextElement.innerText.length < 19) {
+                this.currentOperandTextElement.innerText += this.currentOperand.toString().substr(this.currentOperand.toString().length - 1)
+            }
+            else {
+                return
+            }
+           
+  
+            if (this.currentOperandTextElement.innerText.length==4) {
+                this.currentOperandTextElement.innerText += "-";
+            }
+            if (this.currentOperandTextElement.innerText.length == 9) {
+                this.currentOperandTextElement.innerText += "-";
+            }
+            if (this.currentOperandTextElement.innerText.length == 14) {
+                this.currentOperandTextElement.innerText += "-";
+            }
+          
+        }
+    }
+
+
+    const numberButtons = document.querySelectorAll('[data-number]')
+    const operationButtons = document.querySelectorAll('[data-operation]')
+    const equalsButton = document.querySelector('[data-equals]')
+    const deleteButton = document.querySelector('[data-delete]')
+    const allClearButton = document.querySelector('[data-all-clear]')
+    //const previousOperandTextElement = document.querySelector('[data-previous-operand]')
+    const currentOperandTextElement = document.querySelector('[data-current-operand]')
+
+    const calculator = new Calculator(currentOperandTextElement)
+
+    numberButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            calculator.appendNumber(button.innerText)
+            calculator.updateDisplay()
+        })
+    })
+
+    allClearButton.addEventListener('click', button => {
+        calculator.clear()
+        calculator.updateDisplay()
+    })
+
+    deleteButton.addEventListener('click', button => {
+        calculator.delete()
+        calculator.updateDisplay()
+    })
+</script>
