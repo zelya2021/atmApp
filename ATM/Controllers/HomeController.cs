@@ -1,21 +1,26 @@
-﻿using ATM.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using ATM.Dto;
+using ATM.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ATM.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly INotyfService _notyf;
+        public HomeController(INotyfService notyf)
         {
-            _logger = logger;
+            _notyf = notyf;
+        }
+
+        [HttpPost]
+        public void GetCardNumber(AtmDto dto)
+        {
+            if (dto.cardNumber == null)
+            {
+                _notyf.Error("Card number is empty");
+            }
         }
 
         public IActionResult Index()
