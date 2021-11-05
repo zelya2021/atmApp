@@ -1,16 +1,11 @@
-﻿
-@{
-    ViewData["Title"] = "Home Page";
-}
-
-@section Stylesheets {
+﻿@section Stylesheets {
     <link href="@Url.Content("/css/homeStyle.css")" rel="stylesheet" />
 }
 
 <form method="post" id="atm-form">
     <div class="atm-grid">
         <div class="output">
-            <lable style="color: aqua;">Input card number</lable>
+            <lable style="color: aqua;">Input your pin</lable>
             <div data-current-operand class="current-operand"></div>
         </div>
 
@@ -34,7 +29,6 @@
 
 </form>
 
-
 @section Scriptheets {
-    <script src="@Url.Content("./js/homeScript.js")"></script>
+    <script src="@Url.Content("/js/enterPin.js")"></script>
 }

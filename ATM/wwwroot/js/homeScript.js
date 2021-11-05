@@ -9,10 +9,6 @@ class Atm {
         this.currentOperandTextElement.innerText = ''
     }
 
-    delete() {
-        this.currentOperand = this.currentOperand.toString().slice(0, -1)
-    }
-
     appendNumber(number) {
         this.currentOperand = this.currentOperand.toString() + number.toString()
     }
@@ -33,7 +29,8 @@ class Atm {
         if (this.currentOperandTextElement.innerText.length == 14) {
             this.currentOperandTextElement.innerText += "-";
         }
-
+        localStorage.clear()
+        localStorage.setItem('cardNumberSt', currentOperandTextElement.innerText)
     }
 }
 
@@ -42,18 +39,18 @@ const numberButtons = document.querySelectorAll('[data-number]')
 const allClearButton = document.querySelector('[data-all-clear]')
 const currentOperandTextElement = document.querySelector('[data-current-operand]')
 
-const calculator = new Atm(currentOperandTextElement)
+const atm = new Atm(currentOperandTextElement)
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
-        calculator.appendNumber(button.innerText)
-        calculator.updateDisplay()
+        atm.appendNumber(button.innerText)
+        atm.updateDisplay()
     })
 })
 
 allClearButton.addEventListener('click', button => {
-    calculator.clear()
-    calculator.updateDisplay()
+    atm.clear()
+    atm.updateDisplay()
 })
 
 const atmForm = document.querySelector('#atm-form');
@@ -71,8 +68,26 @@ function SendCardNumber(e) {
         data: {
             cardNumber: cardNumber
         },
-        success: function () {
-            currentOperandTextElement.innerText=""
+        success: function (response) {
+            window.location.href = response.redirectToUrl;
         }
     })
 }
+////for Pin Page
+//const numberPinButtons = document.querySelectorAll('[pin-number]')
+//const allClearPinButton = document.querySelector('[pin-all-clear]')
+//const currentOperandPinTextElement = document.querySelector('[pin-current-operand]')
+
+//const calculatorForPin = new Atm(currentOperandPinTextElement)
+
+//numberPinButtons.forEach(button => {
+//    button.addEventListener('click', () => {
+//        calculatorForPin.appendNumber(button.innerText)
+//        calculatorForPin.updatePinDisplay()
+//    })
+//})
+
+//allClearPinButton.addEventListener('click', button => {
+//    calculatorForPin.clear()
+//    calculatorForPin.updatePinDisplay()
+//})
