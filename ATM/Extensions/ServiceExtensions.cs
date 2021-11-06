@@ -14,6 +14,7 @@ namespace ATM.Extensions
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<ICardService, CardService>();
+            services.AddScoped<IOperationService, OperationService>();
         }
     }
 }

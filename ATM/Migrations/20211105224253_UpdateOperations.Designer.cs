@@ -4,14 +4,16 @@ using ATM.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ATM.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211105224253_UpdateOperations")]
+    partial class UpdateOperations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,29 +91,11 @@ namespace ATM.Migrations
                         new
                         {
                             Id = 1,
-                            AccountBalance = 2220m,
+                            AccountBalance = 0m,
                             CardId = 1,
                             NameOfOperation = "cash withdrawal",
-                            Time = new DateTime(2021, 11, 6, 1, 8, 0, 381, DateTimeKind.Local).AddTicks(6318),
-                            WithdrawnAmount = 1000m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AccountBalance = 2220m,
-                            CardId = 1,
-                            NameOfOperation = "balance",
-                            Time = new DateTime(2021, 11, 6, 1, 8, 0, 383, DateTimeKind.Local).AddTicks(1750),
+                            Time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             WithdrawnAmount = 0m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AccountBalance = 1220m,
-                            CardId = 1,
-                            NameOfOperation = "cash withdrawal",
-                            Time = new DateTime(2021, 11, 6, 1, 8, 0, 383, DateTimeKind.Local).AddTicks(1776),
-                            WithdrawnAmount = 1000m
                         });
                 });
 

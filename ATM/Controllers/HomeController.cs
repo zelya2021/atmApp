@@ -9,10 +9,12 @@ namespace ATM.Controllers
     {
         private readonly INotyfService _notyf;
         private ICardService _cardService;
-        public HomeController(INotyfService notyf, ICardService cardService)
+        private IOperationService _operationService;
+        public HomeController(INotyfService notyf, ICardService cardService, IOperationService operationService)
         {
             _notyf = notyf;
             _cardService = cardService;
+            _operationService = operationService;
         }
 
         [HttpPost]
@@ -51,14 +53,28 @@ namespace ATM.Controllers
             }
             else
             {
-                var card = _cardService.GetCardByName(dto);
+                var card = _cardService.GetCardByNameAndPin(dto);
+                var cardInfo = _cardService.GetCardByName(dto);
+
+                if (cardInfo.IsLocked)
+                {
+
+                }
                 if (card == null)
                 {
-                    _notyf.Error("Card not found");
+                    if (cardInfo.NumberOfWrongAttempts<=3)
+                    {
+                        _cardService.CheckNumberOfAttempts(dto);
+                        //error
+                    }
+                    else
+                    {
+                        //error
+                    }
                 }
                 else
                 {
-                    return Json(new { redirectToUrl = Url.Action("PinCodeEnter", "Home") });
+                    return Json(new { redirectToUrl = Url.Action("Operations", "Home") });
                 }
             }
             return View();
@@ -67,6 +83,11 @@ namespace ATM.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Operations()
+        {
+            return View(_operationService.GetAllOperations());
         }
     }
 }

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ATM.Models.Operation>
+
+@{
+    ViewData["Title"] = "Operations";
+}
+
+<h1>Operations</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NameOfOperation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WithdrawnAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountBalance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Card.CardNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameOfOperation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WithdrawnAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountBalance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Card.CardNumber)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div class="center">
+    <button type="button" class="btn btn-success">@Html.ActionLink("Balance", "Index", "Home")</button>
+    <button type="button" class="btn btn-success">@Html.ActionLink("Withdraw amount", "Index", "Home")</button>
+    <button type="button" class="btn btn-success">@Html.ActionLink("Exit", "Index", "Home")</button>
+</div>

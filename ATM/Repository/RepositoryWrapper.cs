@@ -1,5 +1,6 @@
 ﻿using ATM.Database;
 using ATM.Repository.CardRep;
+using ATM.Repository.OperationRep;
 
 namespace ATM.Repository
 {
@@ -7,6 +8,7 @@ namespace ATM.Repository
     {
         private DatabaseContext _dbContext;
         private ICardRepository _card;
+        private IOperationRepository _operation;
         public ICardRepository Card
         {
             get
@@ -18,6 +20,19 @@ namespace ATM.Repository
                 return _card;
             }
         }
+
+        public IOperationRepository Operation
+        {
+            get
+            {
+                if (_operation == null)
+                {
+                    _operation = new OperationRepository(_dbContext);
+                }
+                return _operation;
+            }
+        }
+
         public RepositoryWrapper(DatabaseContext abContext)
         {
             _dbContext = abContext;

@@ -17,5 +17,17 @@ namespace ATM.Services
         {
            return _repoWrapper.Card.FindByCondition(x => x.CardNumber == dto.cardNumber).FirstOrDefault();
         }
+
+        public Card GetCardByNameAndPin(AtmDto dto)
+        {
+            return _repoWrapper.Card.FindByCondition(x => x.CardNumber == dto.cardNumber && x.PinCode==dto.pin).FirstOrDefault();
+        }
+
+        public void CheckNumberOfAttempts(AtmDto dto)
+        {
+            var card = GetCardByName(dto);
+            card.NumberOfWrongAttempts += 1;
+            _repoWrapper.Card.Update(card);
+        }
     }
 }
