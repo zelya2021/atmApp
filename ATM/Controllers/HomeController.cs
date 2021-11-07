@@ -58,9 +58,9 @@ namespace ATM.Controllers
                 {
                     return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "Your card is blocked!" }) });
                 }
-                if (cardInfo.NumberOfWrongAttempts > 3)
+                if (cardInfo.NumberOfWrongAttempts == 3 && card == null)
                 {
-                    _cardService.BlockCard(card);
+                    _cardService.BlockCard(cardInfo);
                     return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "Your card is blocked!" }) });
                 }
                 if (card == null)
@@ -78,6 +78,15 @@ namespace ATM.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult RedirectIndex(AtmDto dto)
+        {
+           var card = _cardService.GetCardByName(dto.cardNumber);
+            card.NumberOfWrongAttempts = 0;
+            _cardService.Update(card);
+            return Json(new { redirectToUrl = Url.Action("Index", "Home") });
         }
 
         public IActionResult Operations(AtmDto dto)
@@ -120,7 +129,7 @@ namespace ATM.Controllers
             {
                 return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "Insufficient funds on the card", flag=true }) });
             }
-            _cardService.UpdateCard(currentCard, inputAmount.withdrawnAmount);
+            _cardService.UpdateCardByWithdrawnAmount(currentCard, inputAmount.withdrawnAmount);
 
             var currentOperation = new Operation
             {

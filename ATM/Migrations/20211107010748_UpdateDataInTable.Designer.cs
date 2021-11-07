@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ATM.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20211106232912_UpdateDataInTable1")]
-    partial class UpdateDataInTable1
+    [Migration("20211107010748_UpdateDataInTable")]
+    partial class UpdateDataInTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -103,7 +103,7 @@ namespace ATM.Migrations
                             AccountBalance = 2220m,
                             CardId = 1,
                             NameOfOperation = "cash withdrawal",
-                            Time = new DateTime(2021, 11, 7, 1, 29, 11, 633, DateTimeKind.Local).AddTicks(1514),
+                            Time = new DateTime(2021, 11, 7, 3, 7, 48, 479, DateTimeKind.Local).AddTicks(7765),
                             WithdrawnAmount = 1000m
                         },
                         new
@@ -112,7 +112,7 @@ namespace ATM.Migrations
                             AccountBalance = 2220m,
                             CardId = 1,
                             NameOfOperation = "balance",
-                            Time = new DateTime(2021, 11, 7, 1, 29, 11, 635, DateTimeKind.Local).AddTicks(436),
+                            Time = new DateTime(2021, 11, 7, 3, 7, 48, 481, DateTimeKind.Local).AddTicks(3921),
                             WithdrawnAmount = 0m
                         },
                         new
@@ -121,7 +121,7 @@ namespace ATM.Migrations
                             AccountBalance = 1220m,
                             CardId = 1,
                             NameOfOperation = "cash withdrawal",
-                            Time = new DateTime(2021, 11, 7, 1, 29, 11, 635, DateTimeKind.Local).AddTicks(461),
+                            Time = new DateTime(2021, 11, 7, 3, 7, 48, 481, DateTimeKind.Local).AddTicks(3947),
                             WithdrawnAmount = 1000m
                         });
                 });

@@ -58,3 +58,24 @@
         <button type="button" id="thirdBtn" class="btn btn-info btn-md center-block" Style="width: 100px;">@Html.ActionLink("Exit", "Index", "Home")</button>
     </div>
 </div>
+
+<script>
+    const redirectTo = document.querySelector('#thirdBtn');
+    if (redirectTo) {
+        redirectTo.addEventListener('click', redirectToIndex);
+    }
+
+    function redirectToIndex() {
+        $.ajax({
+            type: "post",
+            data: {
+                cardNumber: localStorage.getItem('cardNumberSt'),
+            },
+            url: "/Home/RedirectIndex",
+            success: function (response) {
+                window.location.href = response.redirectToUrl;
+            }
+        });
+    }
+
+</script>

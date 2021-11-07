@@ -69,3 +69,21 @@ function SendCardNumber(e) {
         }
     })
 }
+
+const redirectTo = document.querySelector('#thirdBtn');
+if (redirectTo) {
+    redirectTo.addEventListener('click', redirectToIndex);
+}
+
+function redirectToIndex() {
+    $.ajax({
+        type: "post",
+        data: {
+            cardNumber: localStorage.getItem('cardNumberSt'),
+        },
+        url: "/Home/RedirectIndex",
+        success: function (response) {
+            window.location.href = response.redirectToUrl;
+        }
+    });
+}

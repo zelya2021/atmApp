@@ -9,7 +9,8 @@ namespace ATM.Services
         public Card GetCardByName(string dto);
         public Card GetCardByNameAndPin(AtmDto dto);
         void CheckNumberOfAttempts(AtmDto dto);
-        public void UpdateCard(Card card, decimal withdrawnAmount);
+        public void UpdateCardByWithdrawnAmount(Card card, decimal withdrawnAmount);
         public void BlockCard(Card card);
+        public void Update(Card card);
     }
 }

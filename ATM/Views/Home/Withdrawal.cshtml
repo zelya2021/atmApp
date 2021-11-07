@@ -11,51 +11,10 @@
 <div class="row">
     <div class="col-sm-12 text-center">
         <button type="button" id="redirectTo" class="btn btn-info btn-md center-block" Style="width: 100px; margin: 25px;">Back</button>
-        <button type="button" id="secondBtn" class="btn btn-info btn-md center-block" Style="width: 100px;">@Html.ActionLink("Exit", "Index", "Home")</button>
+        <button type="button" id="thirdBtn" class="btn btn-info btn-md center-block" Style="width: 100px; margin: 25px;">@Html.ActionLink("Exit", "Index", "Home")</button>
     </div>
 </div>
 
-<script>
-    const withdrawnAmount = document.querySelector('#withdrawnAmount');
-    const amount = document.querySelector('#amount');
-
-    const redirectTo = document.querySelector('#redirectTo');
-
-    if (withdrawnAmount) {
-        withdrawnAmount.addEventListener('submit', SendAmount);
-    }
-
-    function SendAmount(e) {
-        e.preventDefault();
-        const cardNumber = localStorage.getItem('cardNumberSt')
-        console.log(cardNumber)
-        $.ajax({
-            type: "post",
-            url: "/Home/Withdrawal",
-            data: {
-                cardNumber: cardNumber,
-                withdrawnAmount:amount.value
-            },
-            success: function (response) {
-                window.location.href = response.redirectToUrl;
-            }
-        })
-    }
-
-    if (redirectTo) {
-        redirectTo.addEventListener('click', redirectToOperations);
-    }
-
-    function redirectToOperations() {
-        $.ajax({
-            type: "post",
-            data: {
-                cardNumber: localStorage.getItem('cardNumberSt'),
-            },
-            url: "/Home/RedirectOperations",
-            success: function (response) {
-                window.location.href = response.redirectToUrl;
-            }
-        });
-    }
-</script>
+@section Scriptheets {
+    <script src="@Url.Content("/js/withdrawnScript.js")"></script>
+}

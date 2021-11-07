@@ -35,9 +35,14 @@ namespace ATM.Services
             _repoWrapper.Card.Update(card);
         }
 
-        public void UpdateCard(Card card, decimal withdrawnAmount)
+        public void UpdateCardByWithdrawnAmount(Card card, decimal withdrawnAmount)
         {
             card.Balance -= withdrawnAmount;
+            _repoWrapper.Card.Update(card);
+        }
+
+        public void Update(Card card)
+        {
             _repoWrapper.Card.Update(card);
         }
     }

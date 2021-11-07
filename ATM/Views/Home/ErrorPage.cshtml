@@ -10,7 +10,7 @@
     <div class="col-sm-12 text-center">
         @if (@ViewBag.Flag == true)
         {
-        <button type="button" id="thirdBtn" class="btn btn-info btn-md center-block" Style="width: 100px; margin: 25px;">Back</button>
+            <button type="button" id="thirdBtn" class="btn btn-info btn-md center-block" Style="width: 100px; margin: 25px;">Back</button>
         }
         else
         {
@@ -20,24 +20,7 @@
     </div>
 </div>
 
-<script>
 
-    const redirectTo= document.querySelector('#thirdBtn');
-
-    if (redirectTo) {
-        redirectTo.addEventListener('click', redirectToOperations);
-    }
-
-    function redirectToOperations() {
-        $.ajax({
-            type: "post",
-            data: {
-                cardNumber: localStorage.getItem('cardNumberSt'),
-            },
-            url: "/Home/RedirectOperations",
-            success: function (response) {
-                window.location.href = response.redirectToUrl;
-            }
-        });
-    }
-</script>
+@section Scriptheets {
+    <script src="@Url.Content("/js/errorPageScript.js")"></script>
+}
