@@ -1,0 +1,14 @@
+﻿.header {
+    padding: 60px;
+    text-align: center;
+    background: #1abc9c;
+    color: white;
+    font-size: 30px;
+}
+
+#btnSearch,
+#btnClear {
+    display: inline-block;
+    vertical-align: top;
+    margin: 50px 0;
+}

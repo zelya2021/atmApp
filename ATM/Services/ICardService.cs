@@ -6,8 +6,10 @@ namespace ATM.Services
 {
     public interface ICardService
     {
-        public Card GetCardByName(AtmDto dto);
+        public Card GetCardByName(string dto);
         public Card GetCardByNameAndPin(AtmDto dto);
         void CheckNumberOfAttempts(AtmDto dto);
+        public void UpdateCard(Card card, decimal withdrawnAmount);
+        public void BlockCard(Card card);
     }
 }

@@ -1,7 +1,7 @@
-﻿@model IEnumerable<ATM.Models.Operation>
+﻿@model List<ATM.Models.Operation>
 
-@{
-    ViewData["Title"] = "Operations";
+@section Stylesheets {
+    <link href="@Url.Content("/css/homeStyle.css")" rel="stylesheet" />
 }
 
 <h1>Operations</h1>
@@ -10,48 +10,51 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NameOfOperation)
+                NameOfOperation
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Time)
+                Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WithdrawnAmount)
+                WithdrawnAmount
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AccountBalance)
+                AccountBalance
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Card.CardNumber)
+                CardNumber
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NameOfOperation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WithdrawnAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountBalance)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Card.CardNumber)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameOfOperation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WithdrawnAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountBalance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Card.CardNumber)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
-<div class="center">
-    <button type="button" class="btn btn-success">@Html.ActionLink("Balance", "Index", "Home")</button>
-    <button type="button" class="btn btn-success">@Html.ActionLink("Withdraw amount", "Index", "Home")</button>
-    <button type="button" class="btn btn-success">@Html.ActionLink("Exit", "Index", "Home")</button>
+<div class="row">
+    <div class="col-sm-12 text-center center">
+        <button type="button" id="firstBtn" class="btn btn-info btn-md center-block" Style="width: 100px;">@Html.ActionLink("Balance", "Balance", "Home", new { cardNumber = @ViewBag.CardNumber })</button>
+        <button type="button" id="secondBtn" class="btn btn-info btn-md center-block" Style="width: 200px; margin:25px;">@Html.ActionLink("Withdraw amount", "Withdrawal", "Home", new { cardNumber = @ViewBag.CardNumber })</button>
+        <button type="button" id="thirdBtn" class="btn btn-info btn-md center-block" Style="width: 100px;">@Html.ActionLink("Exit", "Index", "Home")</button>
+    </div>
 </div>

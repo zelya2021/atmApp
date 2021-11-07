@@ -1,16 +1,16 @@
-﻿@model IEnumerable<ATM.Models.Operation>
+﻿@model ATM.Models.CurrentBalance
 
-@{
-    ViewData["Title"] = "Operations";
+@section Stylesheets {
+    <link href="@Url.Content("/css/homeStyle.css")" rel="stylesheet" />
 }
 
-<h1>Operations</h1>
+<h1>Balance</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Card.CardNumber)
+                CardNumber
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Time)
@@ -22,24 +22,23 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Card.CardNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccountBalance)
-                </td>
-            </tr>
-        }
+        <tr>
+            <td>
+                @ViewBag.CardNumber
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.AccountBalance)
+            </td>
+        </tr>
     </tbody>
 </table>
 
-<div class="center">
-    <button type="button" class="btn btn-success">@Html.ActionLink("Back", "Operations", "Home")</button>
-    <button type="button" class="btn btn-success">@Html.ActionLink("Exit", "Index", "Home")</button>
+<div class="row">
+    <div class="col-sm-12 text-center">
+        <button type="button" id="firstBtn" class="btn btn-info btn-md center-block" Style="width: 100px; margin: 25px;">@Html.ActionLink("Back", "Operations", "Home", new { cardNumber = @ViewBag.CardNumber })</button>
+        <button type="button" id="secondBtn" class="btn btn-info btn-md center-block" Style="width: 100px;">@Html.ActionLink("Exit", "Index", "Home")</button>
+    </div>
 </div>

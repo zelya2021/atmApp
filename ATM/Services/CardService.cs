@@ -13,9 +13,9 @@ namespace ATM.Services
             _repoWrapper = repoWrapper;
         }
 
-        public Card GetCardByName(AtmDto dto)
+        public Card GetCardByName(string cardNumber)
         {
-           return _repoWrapper.Card.FindByCondition(x => x.CardNumber == dto.cardNumber).FirstOrDefault();
+           return _repoWrapper.Card.FindByCondition(x => x.CardNumber == cardNumber).FirstOrDefault();
         }
 
         public Card GetCardByNameAndPin(AtmDto dto)
@@ -25,8 +25,19 @@ namespace ATM.Services
 
         public void CheckNumberOfAttempts(AtmDto dto)
         {
-            var card = GetCardByName(dto);
+            var card = GetCardByName(dto.cardNumber);
             card.NumberOfWrongAttempts += 1;
+            _repoWrapper.Card.Update(card);
+        }
+        public void BlockCard(Card card)
+        {
+            card.IsLocked = true;
+            _repoWrapper.Card.Update(card);
+        }
+
+        public void UpdateCard(Card card, decimal withdrawnAmount)
+        {
+            card.Balance -= withdrawnAmount;
             _repoWrapper.Card.Update(card);
         }
     }

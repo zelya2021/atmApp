@@ -1,18 +1,17 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using ATM.Dto;
+﻿using ATM.Dto;
+using ATM.Models;
 using ATM.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace ATM.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly INotyfService _notyf;
         private ICardService _cardService;
         private IOperationService _operationService;
-        public HomeController(INotyfService notyf, ICardService cardService, IOperationService operationService)
+        public HomeController(ICardService cardService, IOperationService operationService)
         {
-            _notyf = notyf;
             _cardService = cardService;
             _operationService = operationService;
         }
@@ -22,21 +21,20 @@ namespace ATM.Controllers
         {
             if (dto.cardNumber == null)
             {
-                _notyf.Error("Card number is empty");
+                return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "Card number is empty!" }) });
             }
             else
             {
-                var card = _cardService.GetCardByName(dto);
+                var card = _cardService.GetCardByName(dto.cardNumber);
                 if (card == null)
                 {
-                    _notyf.Error("Card not found");
+                    return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "Card not found!" }) });
                 }
                 else
                 {
                     return Json(new { redirectToUrl = Url.Action("PinCodeEnter", "Home") });
                 }
             }
-             return View();
         }
 
         public IActionResult PinCodeEnter()
@@ -49,35 +47,32 @@ namespace ATM.Controllers
         {
             if (dto.pin == null)
             {
-                _notyf.Error("Pin is empty");
+                return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "PIN code cannot be empty!" }) });
             }
             else
             {
                 var card = _cardService.GetCardByNameAndPin(dto);
-                var cardInfo = _cardService.GetCardByName(dto);
+                var cardInfo = _cardService.GetCardByName(dto.cardNumber);
 
                 if (cardInfo.IsLocked)
                 {
-
+                    return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "Your card is blocked!" }) });
+                }
+                if (cardInfo.NumberOfWrongAttempts > 3)
+                {
+                    _cardService.BlockCard(card);
+                    return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "Your card is blocked!" }) });
                 }
                 if (card == null)
                 {
-                    if (cardInfo.NumberOfWrongAttempts<=3)
-                    {
-                        _cardService.CheckNumberOfAttempts(dto);
-                        //error
-                    }
-                    else
-                    {
-                        //error
-                    }
+                    _cardService.CheckNumberOfAttempts(dto);
+                    return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "PIN code entered incorrectly!" }) });
                 }
                 else
                 {
-                    return Json(new { redirectToUrl = Url.Action("Operations", "Home") });
+                    return Json(new { redirectToUrl = Url.Action("Operations", "Home", dto) });
                 }
             }
-            return View();
         }
 
         public IActionResult Index()
@@ -85,9 +80,72 @@ namespace ATM.Controllers
             return View();
         }
 
-        public IActionResult Operations()
+        public IActionResult Operations(AtmDto dto)
         {
-            return View(_operationService.GetAllOperations());
+            ViewBag.CardNumber = dto.cardNumber;
+            return View(_operationService.GetAllOperationsByCard(dto.cardNumber));
+        }
+
+        [HttpPost]
+        public IActionResult RedirectOperations(AtmDto dto)
+        {
+            ViewBag.CardNumber = dto.cardNumber;
+            return Json(new { redirectToUrl = Url.Action("Operations", "Home", dto) });
+        }
+
+        public IActionResult Balance(string cardNumber)
+        {
+            ViewBag.CardNumber = cardNumber;
+            var currentBalance = new CurrentBalance
+            {
+                CardId = _cardService.GetCardByName(cardNumber).Id,
+                AccountBalance = _cardService.GetCardByName(cardNumber).Balance,
+                Time = DateTime.Now,
+                Description = "balance"
+            };
+
+            _operationService.AddNewOperationByCurrentBalance(currentBalance);
+
+            return View(currentBalance);
+        }
+
+        [HttpPost]
+        public IActionResult Withdrawal(AtmDto inputAmount)
+        {
+            ViewBag.CardNumber = inputAmount.cardNumber;
+
+            var currentCard = _cardService.GetCardByName(inputAmount.cardNumber);
+
+            if (currentCard.Balance < inputAmount.withdrawnAmount)
+            {
+                return Json(new { redirectToUrl = Url.Action("ErrorPage", "Home", new { errorMessage = "Insufficient funds on the card", flag=true }) });
+            }
+            _cardService.UpdateCard(currentCard, inputAmount.withdrawnAmount);
+
+            var currentOperation = new Operation
+            {
+                CardId = _cardService.GetCardByName(inputAmount.cardNumber).Id,
+                AccountBalance = currentCard.Balance,
+                Time = DateTime.Now,
+                NameOfOperation = "cash withdrawal",
+                WithdrawnAmount = inputAmount.withdrawnAmount
+            };
+
+            _operationService.AddNewOperationByOperation(currentOperation);
+
+            return Json(new { redirectToUrl = Url.Action("Operations", "Home", inputAmount) });
+        }
+
+        public IActionResult Withdrawal()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorPage(string errorMessage, bool flag)
+        {
+            ViewBag.Message = errorMessage;
+            ViewBag.Flag = flag;
+            return View();
         }
     }
 }

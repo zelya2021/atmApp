@@ -45,7 +45,6 @@ body {
     }
 
 .divLikeBtn {
-    display: inline-block;
     color: #444;
     border: 1px solid #CCC;
     background: #DDD;
@@ -59,6 +58,9 @@ body {
     border: 1px solid white;
     outline: none;
     background-color: rgba(255, 255, 255, .75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .divLikeBtn:hover {
@@ -71,4 +73,12 @@ body {
     align-items: center;
     height: 200px;
     font-size: 24px;
+}
+
+#btnSearch,
+#btnClear,
+#thirdBtn {
+    display: inline-block;
+    vertical-align: top;
+    margin: 50px 0;
 }

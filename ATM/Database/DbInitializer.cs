@@ -16,7 +16,8 @@ namespace ATM.Database
             modelBuilder.Entity<Operation>().HasData(operation2);
             modelBuilder.Entity<Operation>().HasData(operation3);
             modelBuilder.Entity<Card>().HasData(
-                 new Card { Id = 1, CardNumber = "1111-8888-7777-9999", IsLocked = false, PinCode = "1111", NumberOfWrongAttempts = 0, Balance=2000 }
+                 new Card { Id = 1, CardNumber = "1111-8888-7777-9999", IsLocked = false, PinCode = "1111", NumberOfWrongAttempts = 0, Balance=5000 },
+                 new Card { Id = 2, CardNumber = "1111-2222-3333-4444", IsLocked = false, PinCode = "1234", NumberOfWrongAttempts = 0, Balance = 2000 }
             );
         }
     }

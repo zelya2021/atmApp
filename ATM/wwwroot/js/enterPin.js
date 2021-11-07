@@ -17,10 +17,13 @@ class Atm {
         if (this.currentOperandTextElement.innerText.length < 4) {
             this.currentOperandTextElement.innerText += "*"
         }
+        else {
+            return
+        }
     }
 
     getCurrentPassword() {
-        return this.currentOperand.toString();
+        return this.currentOperand.substr(0,4).toString();
     }
 }
 
@@ -41,6 +44,8 @@ numberButtons.forEach(button => {
 allClearButton.addEventListener('click', button => {
     atm.updateDisplay()
     atm.clear()
+    
+    
 })
 
 const atmForm = document.querySelector('#atm-form');
